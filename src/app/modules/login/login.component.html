@@ -1,0 +1,44 @@
+<mat-card class="col-5">
+    <mat-card-header>
+      <mat-card-title class="text-center">Iniciar sesión</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="container">
+            <form [formGroup]="loginForm" (submit)="submit()">    
+              <div class="row mt-3">
+                <div class="col-md">
+                  <mat-form-field class="form-field full-width" appearance="outline">
+                    <mat-label>Usuario</mat-label>
+                    <input matInput formControlName="login" required>
+                    <mat-error *ngIf="loginForm.controls.login.touched && loginForm.controls.login.invalid">
+                      <span *ngIf="loginForm.controls.login.errors.required">Este campo es requerido.</span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md">
+                  <mat-form-field class="form-field full-width" appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput formControlName="password" type="password" required>
+                    <mat-error *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+                      <span *ngIf="loginForm.controls.password.errors.required">Este campo es requerido.</span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="d-flex justify-content-center">
+                  <button mat-raised-button color="success" type="submit" [disabled]="loading">
+                      <mat-icon>send</mat-icon>
+                    Ingresar
+                  </button>
+                </div>
+              </div>
+    
+              <app-loading [show]="loading"></app-loading>
+      
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

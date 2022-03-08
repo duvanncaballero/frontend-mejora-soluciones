@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 500px;
+}
+.mat-column-articulo {
+    width: 50%;
+}
+.mat-column-cantidad {
+    width: 10%;
+}
+.mat-column-impuesto {
+    width: 10%;
+}
+.mat-column-valorUnitario {
+    width: 10%;
+}
+.mat-column-total {
+    width: 10%;
+}
+.mat-column-opcion {
+    width: 5%;
+}

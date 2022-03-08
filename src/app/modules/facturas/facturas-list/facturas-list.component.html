@@ -1,0 +1,56 @@
+<app-loading [show]="loading"></app-loading>
+
+<app-sin-registros *ngIf="loading === false && facturas.data.length == 0"
+  [title]="'Ups! Parece que no hay facturas'"
+  [message]="'Puede empezar creando una'"
+  [path]="'new'"
+  [label]="'Crear Factura'"
+></app-sin-registros>
+
+<table mat-table matSort [dataSource]="facturas"  *ngIf="facturas.data.length !=0">
+  <ng-container matColumnDef="factura">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Factura </th>
+    <td mat-cell *matCellDef="let element"> {{element.prefijo}} - {{element.consecutivo}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+    <td mat-cell *matCellDef="let element"> {{element.fecha}} / {{element.hora}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="emisor">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Emisor </th>
+    <td mat-cell *matCellDef="let element"> {{element.nit_emisor| thousands}} / {{element.emisor}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cliente">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+    <td mat-cell *matCellDef="let element"> {{element.nit_cliente | thousands}} / {{element.cliente}} </td>
+  </ng-container>
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+    <td mat-cell *matCellDef="let element"> $ {{element.total | thousands}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="opcion">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button [matTooltip]="'Ver'" [routerLink]="['view', element.id]">
+        <mat-icon class="text-default">visibility</mat-icon>
+      </button>
+
+      <button mat-icon-button [matTooltip]="'Editar'" [routerLink]="[element.id]">
+        <mat-icon class="text-primary">edit</mat-icon>
+      </button>
+
+      <button mat-icon-button [matTooltip]="'Borrar'" (click)="eliminar(element)">
+        <mat-icon class="text-danger">delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>

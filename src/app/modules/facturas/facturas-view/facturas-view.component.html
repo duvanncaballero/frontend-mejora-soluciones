@@ -1,0 +1,103 @@
+<div class="d-flex justify-content-end">
+    <button [routerLink]="'/facturas'" mat-raised-button color="cancel" type="button" class="ml">
+        <mat-icon>close</mat-icon>
+        Cancelar
+    </button>
+</div>
+
+<div class="container">
+    <div class="row gutters mt-5">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="invoice-container">
+                            <div class="invoice-header">
+                                <!-- Row end -->
+                                <!-- Row start -->
+                                <div class="row gutters mt-5">
+                                    <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <address class="text-right">
+                                            {{ factura?.emisor }}<br>
+                                            {{ factura?.nitEmisor | thousands }}
+                                        </address>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                            <address>
+                                                Cliente: {{ factura?.cliente }}<br>
+                                                Nit: {{ factura?.nitCliente | thousands }}
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                            <div class="invoice-num">
+                                                <div>Factura {{ factura?.prefijo }} - {{ factura?.consecutivo }}</div>
+                                                <div>{{ factura?.fecha }}</div>
+                                            </div>
+                                        </div>													
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                            </div>
+                            <div class="invoice-body">
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="table-responsive">
+                                            <table class="table custom-table m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Producto</th>
+                                                        <th>Impuesto</th>
+                                                        <th>Valor Unitario</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let detalle of factura.detalle">
+                                                        <td>
+                                                            {{ detalle.articulo }}
+                                                        </td>
+                                                        <td>${{ detalle.valor_impuesto | thousands }}</td>
+                                                        <td>${{ detalle.valor_unitario | thousands }}</td>
+                                                        <td>{{ detalle.cantidad }}</td>
+                                                        <td>${{ detalle.valor_total | thousands }}</td>
+                                                    </tr>
+                                                    
+                                                    
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td colspan="3">
+                                                            <h5 class="text-success"><strong>Valor total</strong></h5>
+                                                        </td>			
+                                                        <td>
+                                                            <h5 class="text-success"><strong>${{ factura?.total | thousands }}</strong></h5>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

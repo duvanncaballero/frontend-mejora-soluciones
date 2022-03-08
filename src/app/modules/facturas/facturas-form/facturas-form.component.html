@@ -1,0 +1,173 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>{{!id ? 'Crear ' : 'Editar '}} Factura No. {{ factura }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="container">
+        <form [formGroup]="facturaForm" (submit)="submit()">
+          <div class="row">
+            <div class="d-flex justify-content-end">
+              <button mat-raised-button color="success" type="submit" [disabled]="loading">
+                  <mat-icon>add</mat-icon>
+                Guardar
+              </button>
+    
+              <button [routerLink]="'/facturas'" mat-raised-button color="cancel" type="button" class="ml">
+                <mat-icon>close</mat-icon>
+                Cancelar
+              </button>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Nit Emisor</mat-label>
+                <input matInput formControlName="nitEmisor" required>
+                <mat-error *ngIf="facturaForm.controls.nitEmisor.touched && facturaForm.controls.nitEmisor.invalid">
+                  <span *ngIf="facturaForm.controls.nitEmisor.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Emisor</mat-label>
+                <input matInput formControlName="emisor" oninput="this.value = this.value.toUpperCase()" required>
+                <mat-error *ngIf="facturaForm.controls.emisor.touched && facturaForm.controls.emisor.invalid">
+                  <span *ngIf="facturaForm.controls.emisor.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Nit Cliente</mat-label>
+                <input matInput formControlName="nitCliente" required>
+                <mat-error *ngIf="facturaForm.controls.nitCliente.touched && facturaForm.controls.nitCliente.invalid">
+                  <span *ngIf="facturaForm.controls.nitCliente.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Cliente</mat-label>
+                <input matInput formControlName="cliente" oninput="this.value = this.value.toUpperCase()" required>
+                <mat-error *ngIf="facturaForm.controls.cliente.touched && facturaForm.controls.cliente.invalid">
+                  <span *ngIf="facturaForm.controls.cliente.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <app-loading [show]="loading"></app-loading>
+  
+        </form>
+        
+        <form [formGroup]="detalleForm" (submit)="submitDetail()">
+          <div class="row mt-5">
+            <mat-card-subtitle>Adiccionar articulos</mat-card-subtitle>
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Producto</mat-label>
+                <input matInput formControlName="producto" oninput="this.value = this.value.toUpperCase()" required>
+                <mat-error *ngIf="detalleForm.controls.producto.touched && detalleForm.controls.producto.invalid">
+                  <span *ngIf="detalleForm.controls.producto.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Impuesto</mat-label>
+                <input matInput formControlName="impuesto" required 
+                        currencyMask [options]="{ prefix: '$ ', thousands: '.', precision : 0 }" (ngModelChange)="totalProduct()">
+                <mat-error *ngIf="detalleForm.controls.impuesto.touched && detalleForm.controls.impuesto.invalid">
+                  <span *ngIf="detalleForm.controls.impuesto.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Valor Unitario</mat-label>
+                <input matInput formControlName="valorUnitario" required 
+                      currencyMask [options]="{ prefix: '$ ', thousands: '.', precision : 0 }" (ngModelChange)="totalProduct()">
+                <mat-error *ngIf="detalleForm.controls.valorUnitario.touched && detalleForm.controls.valorUnitario.invalid">
+                  <span *ngIf="detalleForm.controls.valorUnitario.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input matInput formControlName="cantidad" required (ngModelChange)="totalProduct()">
+                <mat-error *ngIf="detalleForm.controls.cantidad.touched && detalleForm.controls.cantidad.invalid">
+                  <span *ngIf="detalleForm.controls.cantidad.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md">
+              <mat-form-field class="form-field full-width" appearance="outline">
+                <mat-label>Total</mat-label>
+                <input matInput formControlName="total" 
+                        currencyMask [options]="{ prefix: '$ ', thousands: '.', precision : 0 }"required readonly>
+                <mat-error *ngIf="detalleForm.controls.total.touched && detalleForm.controls.total.invalid">
+                  <span *ngIf="detalleForm.controls.total.errors.required">Este campo es requerido.</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="d-flex justify-content-end">
+            <button mat-raised-button color="success" type="submit" [disabled]="loading">
+              <mat-icon>add</mat-icon>
+                Adiccionar
+            </button>
+          </div>
+  
+          <app-loading [show]="loading"></app-loading>
+  
+        </form>
+
+        <table mat-table [dataSource]="detalle" *ngIf="detalle.data.length !=0">
+          <ng-container matColumnDef="articulo">
+            <th mat-header-cell *matHeaderCellDef> Articulo </th>
+            <td mat-cell *matCellDef="let element"> {{element.articulo}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="impuesto">
+            <th mat-header-cell *matHeaderCellDef> Impuesto </th>
+            <td mat-cell *matCellDef="let element"> {{element.impuesto | thousands}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="valorUnitario">
+            <th mat-header-cell *matHeaderCellDef> Valor Unitario </th>
+            <td mat-cell *matCellDef="let element"> {{element.valor | thousands}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="cantidad">
+            <th mat-header-cell *matHeaderCellDef> Cantidad </th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidad | thousands}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef> Total </th>
+            <td mat-cell *matCellDef="let element"> {{element.total | thousands}}</td>
+          </ng-container>
+        
+          <ng-container matColumnDef="opcion">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element let i = index;">
+        
+              <button mat-icon-button [matTooltip]="'Borrar'" (click)="eliminar(i)">
+                <mat-icon class="text-danger">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

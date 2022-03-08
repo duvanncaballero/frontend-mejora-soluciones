@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-width: 500px;
+}
+.mat-column-factura {
+    width: 10%;
+}
+.mat-column-fecha {
+    width: 15%;
+}
+.mat-column-emisor {
+    width: 25%;
+}
+.mat-column-cliente {
+    width: 25%;
+}
+.mat-column-total {
+    width: 11%;
+}
+.mat-column-opcion {
+    width: 12%;
+}
